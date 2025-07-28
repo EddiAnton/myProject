@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- Активация аннотаций Spring -->
+    <context:component-scan base-package="com.eddiAnton"/>
+
+    <!-- Основной бин PhoneBook -->
+    <bean id="phoneBook" class="com.eddiAnton.model.PhoneBook">
+        <property name="personList" ref="personList"/>
+    </bean>
+
+    <!-- Список персон -->
+    <util:list id="personList">
+        <ref bean="person1"/>
+        <ref bean="person2"/>
+    </util:list>
+
+    <!-- Персона 1 с контактами -->
+    <bean id="person1" class="com.eddiAnton.model.Person">
+        <constructor-arg name="firstName" value="Иван"/>
+        <constructor-arg name="lastName" value="Иванов"/>
+        <constructor-arg name="surname" value="Иванович"/>
+        <property name="personContacts">
+            <list>
+                <bean class="com.eddiAnton.model.Contact">
+                    <constructor-arg name="contactType" value="EMAIL"/>
+                </bean>
+                <bean class="com.eddiAnton.model.Contact">
+                    <constructor-arg name="contactType" value="PHONE"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Персона 2 с контактами -->
+    <bean id="person2" class="com.eddiAnton.model.Person">
+        <constructor-arg name="firstName" value="Петр"/>
+        <constructor-arg name="lastName" value="Петров"/>
+        <constructor-arg name="surname" value="Петрович"/>
+        <property name="personContacts">
+            <list>
+                <bean class="com.eddiAnton.model.Contact">
+                    <constructor-arg name="contactType" value="EMAIL"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+</beans>
