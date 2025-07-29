@@ -10,9 +10,6 @@
            http://www.springframework.org/schema/util
            http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <!-- Активация аннотаций Spring -->
-    <context:component-scan base-package="com.eddiAnton"/>
-
     <!-- Основной бин PhoneBook -->
     <bean id="phoneBook" class="com.eddiAnton.model.PhoneBook">
         <property name="personList" ref="personList"/>
@@ -31,11 +28,15 @@
         <constructor-arg name="surname" value="Иванович"/>
         <property name="personContacts">
             <list>
-                <bean class="com.eddiAnton.model.Contact">
+                <bean class="com.eddiAnton.model.Email">
                     <constructor-arg name="contactType" value="EMAIL"/>
+                    <constructor-arg name="emailType" value="personal"/>
+                    <constructor-arg name="email" value="ivanov@example.com"/>
                 </bean>
-                <bean class="com.eddiAnton.model.Contact">
+                <bean class="com.eddiAnton.model.Phone">
                     <constructor-arg name="contactType" value="PHONE"/>
+                    <constructor-arg name="phoneType" value="mobile"/>
+                    <constructor-arg name="phoneNumber" value="+79139139999"/>
                 </bean>
             </list>
         </property>
@@ -48,8 +49,10 @@
         <constructor-arg name="surname" value="Петрович"/>
         <property name="personContacts">
             <list>
-                <bean class="com.eddiAnton.model.Contact">
+                <bean class="com.eddiAnton.model.Email">
                     <constructor-arg name="contactType" value="EMAIL"/>
+                    <constructor-arg name="emailType" value="work"/>
+                    <constructor-arg name="email" value="petrov@company.com"/>
                 </bean>
             </list>
         </property>

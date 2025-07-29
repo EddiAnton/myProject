@@ -8,6 +8,9 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+
+        System.out.println("Программа запущена!");
+
 //        PhoneBook phoneBook = new PhoneBook();
 //        List<Person> phoneBookPersonList = new ArrayList<>();
 //        Person person = new Person("Иванов", "Иван", "Иванович");
@@ -20,6 +23,7 @@ public class Main {
 //        phoneBookPersonList.add(person);
 //
 //        phoneBook.setPersonList(phoneBookPersonList);
+//        System.out.println(phoneBook.toString());
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
