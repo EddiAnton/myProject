@@ -13,7 +13,9 @@
     <context:property-placeholder location="classpath:application.properties" file-encoding="UTF-8"/>
 
     <!-- Основной бин PhoneBook -->
-    <bean id="phoneBook" class="com.eddiAnton.model.PhoneBook">
+    <bean id="phoneBook"
+          class="com.eddiAnton.model.PhoneBook"
+          scope="singleton">
         <property name="personList" ref="personList"/>
     </bean>
 

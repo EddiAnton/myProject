@@ -1,8 +1,15 @@
 package com.eddiAnton.model;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
+@Component
 public class PhoneBook {
+    public PhoneBook(){
+        System.out.println("Phone book is created");
+    }
+
     private List<Person> personList;
 
     public List<Person> getPersonList() {

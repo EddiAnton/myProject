@@ -25,7 +25,7 @@ public class Main {
 //        phoneBook.setPersonList(phoneBookPersonList);
 //        System.out.println(phoneBook.toString());
 
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext2.xml");
 
         PhoneBook phoneBook = context.getBean("phoneBook", PhoneBook.class);
         System.out.println(phoneBook.toString());
