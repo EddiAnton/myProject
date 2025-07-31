@@ -1,9 +1,10 @@
 package com.eddiAnton;
 
+import com.eddiAnton.configuration.AppConfig;
 import com.eddiAnton.model.*;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.eddiAnton.service.PhoneBookService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -11,25 +12,16 @@ public class Main {
 
         System.out.println("Программа запущена!");
 
-//        PhoneBook phoneBook = new PhoneBook();
-//        List<Person> phoneBookPersonList = new ArrayList<>();
-//        Person person = new Person("Иванов", "Иван", "Иванович");
-//        Contact contact1 = new Phone(ContactType.PHONE, "mobile", "+79139139999");
-//        Contact contact2 = new Email(ContactType.EMAIL, "personal", "test@test.ru");
-//        List<Contact> contacts = new ArrayList<>();
-//        contacts.add(contact1);
-//        contacts.add(contact2);
-//        person.setPersonContacts(contacts);
-//        phoneBookPersonList.add(person);
-//
-//        phoneBook.setPersonList(phoneBookPersonList);
-//        System.out.println(phoneBook.toString());
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        PhoneBookService service = context.getBean(PhoneBookService.class);
 
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext2.xml");
+        Person person = new Person("Ivan", "Ivanovich", "Ivanov");
+        person.setPersonContacts(List.of(
+                new Phone(ContactType.PHONE, "mobile", "+1234567890"),
+                new Email(ContactType.EMAIL, "work", "ivanov@example.ru")
+        ));
 
-        PhoneBook phoneBook = context.getBean("phoneBook", PhoneBook.class);
-        System.out.println(phoneBook.toString());
-
-        context.close();
+        service.addPerson(person);
+        service.showAllPersons();
     }
 }
