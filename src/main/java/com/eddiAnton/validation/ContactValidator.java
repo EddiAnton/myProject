@@ -1,6 +1,7 @@
 package com.eddiAnton.validation;
 
 import com.eddiAnton.exception.InvalidDataException;
+import com.eddiAnton.model.Address;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +18,18 @@ public class ContactValidator {
     public void validateEmail(String email) {
         if (email == null || !email.matches(EMAIL_REGEX)) {
             throw new InvalidDataException("Невалидный емайл");
+        }
+    }
+
+    public void validateAddress(Address address) {
+        // Базовая валидация адреса
+        if (address.getCity() == null ||
+            address.getCity().trim().isEmpty() ||
+            address.getStreet() == null ||
+            address.getStreet().trim().isEmpty() ||
+            address.getHouse() == null ||
+            address.getHouse().trim().isEmpty()) {
+            throw new IllegalArgumentException("Невалидный адрес");
         }
     }
 }

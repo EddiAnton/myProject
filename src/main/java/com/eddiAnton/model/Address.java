@@ -14,6 +14,13 @@ public class Address extends Contact {
         this.apartment = apartment;
     }
 
+    public Address(ContactType contactType, String city, String street, String house) {
+        super(contactType);
+        this.city = city;
+        this.street = street;
+        this.house = house;
+    }
+
     public String getCity() {
         return city;
     }

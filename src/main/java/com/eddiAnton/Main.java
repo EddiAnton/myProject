@@ -2,6 +2,7 @@ package com.eddiAnton;
 
 import com.eddiAnton.configuration.AppConfig;
 import com.eddiAnton.model.*;
+import com.eddiAnton.service.ContactService;
 import com.eddiAnton.service.PhoneBookService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -14,7 +15,8 @@ public class Main {
         System.out.println("Программа запущена!");
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        PhoneBookService service = context.getBean(PhoneBookService.class);
+        PhoneBookService phoneBookService = context.getBean(PhoneBookService.class);
+        ContactService contactService = context.getBean(ContactService.class);
 
         Person person1 = new Person("Ivan", "Ivanovich", "Ivanov");
         person1.setPersonContacts(List.of(
@@ -28,9 +30,21 @@ public class Main {
                 new Email(ContactType.EMAIL, "private", "petrov@example.ru")
         ));
 
-        service.addPerson(person1);
-        service.addPerson(person2);
-        System.out.println("Persons count: " + service.getPersonCount());
-        service.showAllPersons();
+        phoneBookService.addPerson(person1);
+        phoneBookService.addPerson(person2);
+        System.out.println("Persons count: " + phoneBookService.getPersonCount());
+        phoneBookService.showAllPersons();
+
+        contactService.addContact(person1,
+                new Email(ContactType.EMAIL, "work", "ivanov@example.com"));
+        phoneBookService.showAllPersons();
+
+        contactService.addContact(person1,
+                new Address(ContactType.ADDRESS, "Novosibirsk", "Lenina", "1"));
+        phoneBookService.showAllPersons();
+
+        phoneBookService.removePerson("Petr", "Petrov");
+        phoneBookService.showAllPersons();
+
     }
 }
