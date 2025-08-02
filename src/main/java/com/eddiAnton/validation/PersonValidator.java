@@ -1,6 +1,7 @@
 package com.eddiAnton.validation;
 
 import com.eddiAnton.exception.InvalidDataException;
+import com.eddiAnton.model.Address;
 import com.eddiAnton.model.Email;
 import com.eddiAnton.model.Person;
 import com.eddiAnton.model.Phone;
@@ -27,6 +28,8 @@ public class PersonValidator {
                 contactValidator.validatePhoneNumber(((Phone) contact).getPhoneNumber());
             } else if (contact instanceof Email) {
                 contactValidator.validateEmail(((Email) contact).getEmail());
+            }else if (contact instanceof Address) {
+                contactValidator.validateAddress((Address) contact);
             }
         });
     }

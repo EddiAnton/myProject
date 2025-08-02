@@ -1,5 +1,6 @@
 package com.eddiAnton.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,13 +9,13 @@ public class Person {
     private final String firstName;
     private final String lastName;
     private final String surname;
-    private List<Contact> personContacts;
+    private List<Contact> personContacts = new ArrayList<>();
 
     public Person(String firstName, String lastName, String surname) {
         this.uuid = UUID.randomUUID();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.surname = surname;
+        this.surname = surname;;
     }
 
     public UUID getUuid() {
