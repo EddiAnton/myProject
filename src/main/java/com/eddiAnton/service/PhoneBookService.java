@@ -34,4 +34,8 @@ public class PhoneBookService {
         System.out.println("= Персоны в записной книжке =");
         persons.forEach(System.out::println);
     }
+
+    public int getPersonCount() {
+        return phoneBook.getPersonList().size();
+    }
 }
