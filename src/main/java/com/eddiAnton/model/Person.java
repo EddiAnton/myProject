@@ -1,55 +1,46 @@
 package com.eddiAnton.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
+@Table(name = "persons")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Person {
-    private final UUID uuid;
-    private final String firstName;
-    private final String lastName;
-    private final String surname;
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(columnDefinition = "uuid", updatable = false)
+    private UUID uuid;
+
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false)
+    private String surname;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private List<Contact> personContacts = new ArrayList<>();
 
-    public Person(String firstName, String lastName, String surname) {
-        this.uuid = UUID.randomUUID();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.surname = surname;;
+    public void addContact(Contact contact) {
+        contact.setPerson(this);
+        this.personContacts.add(contact);
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public List<Contact> getPersonContacts() {
-        return personContacts;
-    }
-
-    public void setPersonContacts(List<Contact> personContacts) {
-        this.personContacts = personContacts;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "uuid=" + uuid +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", surname='" + surname + '\'' +
-                ", personContacts=" + personContacts +
-                '}';
+    public void removeContact(Contact contact) {
+        personContacts.remove(contact);
+        contact.setPerson(null);
     }
 }

@@ -1,32 +1,25 @@
 package com.eddiAnton.model;
 
+import jakarta.persistence.DiscriminatorValue;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "contacts")
+@DiscriminatorValue("EMAIL")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Email extends Contact {
-    private final String emailType;
+    private String emailType;
     private String email;
 
-    public Email(ContactType contactType, String emailType, String email) {
-        super(contactType);
-        this.email = email;
-        this.emailType = emailType;
-    }
-
-    public String getEmailType() {
-        return emailType;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     @Override
-    public String toString() {
-        return "Email{" +
-                "emailType='" + emailType + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+    public ContactType getContactType() {
+        return ContactType.EMAIL;
     }
 }

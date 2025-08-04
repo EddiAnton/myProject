@@ -1,70 +1,51 @@
 package com.eddiAnton.service;
 
-import com.eddiAnton.exception.PersonNotFoundException;
+import com.eddiAnton.exception.InvalidDataException;
+import com.eddiAnton.model.Contact;
 import com.eddiAnton.model.Person;
-import com.eddiAnton.model.PhoneBook;
+import com.eddiAnton.repository.ContactRepository;
+import com.eddiAnton.repository.PersonRepository;
 import com.eddiAnton.util.LoggingAspect;
 import com.eddiAnton.validation.PersonValidator;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class PhoneBookService {
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
-    private PhoneBook phoneBook;
-    private final ContactService contactService;
+    private final PersonRepository personRepository;
     private final PersonValidator personValidator;
+    private final ContactRepository contactRepository;
 
-    @Autowired
-    public PhoneBookService (PhoneBook phoneBook, ContactService contactService, PersonValidator personValidator) {
-        this.phoneBook = phoneBook;
-        this.contactService = contactService;
-        this.personValidator = personValidator;
-    }
-
-    public void addPerson(Person person) {
+    @Transactional
+    public Person addPerson(Person person) {
+        if (person.getPersonContacts() == null) {
+            person.setPersonContacts(new ArrayList<>());
+        }
         personValidator.validate(person);
-        phoneBook.getPersonList().add(person);
+        return personRepository.save(person);
     }
 
-    public void removePerson(String firstName, String surname) {
-        if (firstName == null || surname == null) {
-            throw new IllegalArgumentException("Имя и Фамилия не могут быть пустыми");
-        }
-
-        boolean removed = phoneBook.getPersonList().removeIf(person ->
-                person.getFirstName().equals(firstName) && person.getSurname().equals(surname));
-
-        if (!removed) {
-            throw new PersonNotFoundException(
-                    String.format("Персона не найдена: %s %s", firstName, surname));
-        }
-        logger.info("Персона {} {} успешно удалена", firstName, surname);
+    @Transactional
+    public void removePerson(UUID personId) {
+        personRepository.deleteById(personId);
     }
 
-    private Person findPersonById(UUID personUuid) {
-        return phoneBook.getPersonList().stream()
-                .filter(p -> p.getUuid().equals(personUuid))
-                .findFirst()
-                .orElseThrow(() -> new PersonNotFoundException("Не нашлось персоны по uuid: " + personUuid));
+    public List<Person> findAllPersons() {
+        return personRepository.findAll();
     }
 
-    public void showAllPersons() {
-        List<Person> persons = phoneBook.getPersonList();
-        if (persons == null || persons.isEmpty()) {
-            throw new PersonNotFoundException("Персоны не найдены в записной книжке");
-        }
-
-        System.out.println("= Персоны в записной книжке =");
-        persons.forEach(System.out::println);
-    }
-
-    public int getPersonCount() {
-        return phoneBook.getPersonList().size();
+    public Person findPersonByUuid(UUID personId) {
+        return personRepository.findById(personId)
+                .orElseThrow(() -> new RuntimeException("Person not found"));
     }
 }
