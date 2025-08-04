@@ -28,28 +28,11 @@ public class PhoneBookService {
 
     @Transactional
     public Person addPerson(Person person) {
-        if (person.getPersonContacts() == null || person.getPersonContacts().isEmpty()) {
-            throw new InvalidDataException("Персона должна иметь хотя бы один контакт");
+        if (person.getPersonContacts() == null) {
+            person.setPersonContacts(new ArrayList<>());
         }
-
-        List<Contact> contacts = new ArrayList<>(person.getPersonContacts());
-        person.getPersonContacts().clear();
-
-        person = personRepository.save(person);
-
-        for (Contact contact : contacts) {
-            contact.setPerson(person);
-            saveContactWithFlush(contact);
-        }
-
-        person.getPersonContacts().addAll(contacts);
         personValidator.validate(person);
         return personRepository.save(person);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    protected void saveContactWithFlush(Contact contact) {
-        contactRepository.saveAndFlush(contact);
     }
 
     @Transactional

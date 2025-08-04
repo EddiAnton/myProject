@@ -33,22 +33,7 @@ public class ContactService {
 
     public Contact addContact (Person person, Contact contact) {
         contactValidator.validateContact(contact);
-
-        // Сначала сохраняем персону, если она новая
-        if (person.getUuid() == null) {
-            person = personRepository.save(person);
-        }
         contact.setPerson(person);
-
-        // Устанавливаем тип контакта
-        if (contact instanceof Phone) {
-            contact.setContactType(ContactType.PHONE);
-        } else if (contact instanceof Email) {
-            contact.setContactType(ContactType.EMAIL);
-        } else if (contact instanceof Address) {
-            contact.setContactType(ContactType.ADDRESS);
-        }
-
         return contactRepository.save(contact);
     }
 

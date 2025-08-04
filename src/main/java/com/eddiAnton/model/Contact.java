@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.DiscriminatorOptions;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "contact_type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "contacts")
 @Getter
 @Setter
@@ -41,7 +41,7 @@ public abstract class Contact {
     private Person person;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "contact_type", nullable = false)
+    @Column(name = "contact_type", insertable = false, updatable = false)
     protected ContactType contactType;
 
     @PrePersist

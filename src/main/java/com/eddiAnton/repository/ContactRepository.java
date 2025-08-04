@@ -8,19 +8,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ContactRepository extends JpaRepository<Contact, UUID> {
 
-    @Override
-    @EntityGraph(attributePaths = {"person"})
-    <S extends Contact> S save(S entity);
-
-    @Override
-    @EntityGraph(attributePaths = {"person"})
-    <S extends Contact> S saveAndFlush(S entity);
-
     List<Contact> findByPersonUuid(UUID personId);
+
+    @EntityGraph(attributePaths = {"person"})
+    @Query("SELECT contact FROM Contact contact WHERE contact.uuid = :id")
+    Optional<Contact> findByUuidWithPerson(@Param("id") UUID id);
 
     @Modifying
     @Query("DELETE FROM Contact contact WHERE contact.person.uuid = :personId")

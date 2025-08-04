@@ -19,18 +19,22 @@ public class PersonValidator {
             throw new InvalidDataException("Персона не может быть null");
         }
 
-        if (person.getPersonContacts() == null || person.getPersonContacts().isEmpty()) {
-            throw new InvalidDataException("Персона должна иметь хотя бы один контакт");
+        if (person.getFirstName() == null || person.getFirstName().trim().isEmpty() ||
+                person.getLastName() == null || person.getLastName().trim().isEmpty() ||
+                person.getSurname() == null || person.getSurname().trim().isEmpty()) {
+            throw new InvalidDataException("Имя и фамилия обязательны");
         }
 
-        person.getPersonContacts().forEach(contact -> {
-            if (contact instanceof Phone) {
-                contactValidator.validatePhoneNumber(((Phone) contact).getPhoneNumber());
-            } else if (contact instanceof Email) {
-                contactValidator.validateEmail(((Email) contact).getEmail());
-            }else if (contact instanceof Address) {
-                contactValidator.validateAddress((Address) contact);
-            }
-        });
+        if (person.getPersonContacts() != null) {
+            person.getPersonContacts().forEach(contact -> {
+                if (contact instanceof Phone) {
+                    contactValidator.validatePhoneNumber(((Phone) contact).getPhoneNumber());
+                } else if (contact instanceof Email) {
+                    contactValidator.validateEmail(((Email) contact).getEmail());
+                } else if (contact instanceof Address) {
+                    contactValidator.validateAddress((Address) contact);
+                }
+            });
+        }
     }
 }
